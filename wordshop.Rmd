@@ -1,0 +1,226 @@
+---
+title: "Wordshop"
+output:
+  learnr::tutorial:
+    allow_skip: true
+runtime: shiny_prerendered
+tutorial:
+  # id: "com.example.tutorials.my-first-tutorial"
+  version: 2.18
+  # user_id: "dallan"
+description: >
+  Learn to read.
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(lexicon)
+knitr::opts_chunk$set(echo = TRUE, highlight = TRUE)
+kwords <- readLines('resources/k-words.txt')
+fry25_phrases <- readLines('resources/fry_25_phrases.txt')
+fry100_phrases <- readLines('resources/fry100_phrases.txt')
+set.seed(as.numeric(Sys.Date())-1)
+
+
+# helper functions to put in separate file later
+quiz_list <- function(question_list, caption = "Quiz") {
+    index <- 1
+    questions <- lapply(question_list, function(question) {
+        if (!is.null(question$label)) {
+            label <- paste(question$label, index, sep = "-")
+            question$label <- label
+            question$ids$answer <- NS(label)("answer")
+            question$ids$question <- label
+            index <<- index + 1
+        }
+        question
+    })
+    ret <- list(caption = caption, 
+        questions = questions)
+    class(ret) <- "tutorial_quiz"
+    ret
+}
+
+```
+
+## Welcome
+
+New questions are drawn from a larger bank daily. Click start over (bottom left
+when viewing from a computer or if you choose desktop browser option on mobile device)
+to clear previous answers.
+
+## 1.1 Matching (Primer)
+
+```{r fry25-1, echo=FALSE, asis = TRUE}
+n_questions <- 3
+mybank <- lexicon::sw_fry_25[nchar(lexicon::sw_fry_25) < 4]
+mywordsets <- lapply(seq(n_questions), function(i) { sample(mybank, 4) })
+
+quiz_list(
+  lapply(mywordsets, function(mywords) {
+    question(mywords[1],
+             answer(mywords[1], correct = TRUE),
+             answer(mywords[2]),
+             answer(mywords[3]),
+             answer(mywords[4]),
+             random_answer_order = TRUE,
+             allow_retry = TRUE
+    )
+  }),
+  "Find the match"
+)
+```
+
+<!-- ## 1. Typing -->
+
+<!-- ```{r text_fry25, echo = FALSE} -->
+<!-- n_questions <- 3 -->
+<!-- mywords <- sample(mybank, n_questions) -->
+
+<!-- quiz_list( -->
+<!--   lapply(mywords, function(myword) { -->
+<!--     question_text( -->
+<!--       myword, -->
+<!--       answer(myword, correct = TRUE), -->
+<!--       answer(toupper(myword), correct = TRUE), -->
+<!--       answer(stringr::str_to_title(myword), correct = TRUE), -->
+<!--       allow_retry = TRUE -->
+<!--     ) -->
+<!--   }), -->
+<!--   "Fry's 25: under 4" -->
+<!-- ) -->
+<!-- ``` -->
+
+## 1.2 Sorting
+
+````{r fry25_sorting, echo = FALSE}
+n_questions <- 3
+mywords <- sample(mybank, n_questions)
+
+quiz_list(
+  lapply(mywords, function(myword) {
+    rank_ex <- sortable::question_rank(
+      myword,
+      learnr::answer(strsplit(myword, "")[[1]], correct = TRUE)
+    )
+    rank_ex
+  }),
+  "Sort the letters"
+)
+```
+
+## 2.1 Matching (Easy)
+
+```{r fry25-2, echo=FALSE, asis = TRUE}
+n_questions <- 3
+mybank <- lexicon::sw_fry_25
+mywordsets <- lapply(seq(n_questions), function(i) { sample(mybank, 4) })
+
+quiz_list(
+  lapply(mywordsets, function(mywords) {
+    question(mywords[1],
+             answer(mywords[1], correct = TRUE),
+             answer(mywords[2]),
+             answer(mywords[3]),
+             answer(mywords[4]),
+             random_answer_order = TRUE,
+             allow_retry = TRUE
+    )
+  }),
+  "Find the match"
+)
+```
+
+## 2.2 Sorting
+
+````{r fry25_sorting_2, echo = FALSE}
+n_questions <- 3
+mywords <- sample(mybank, n_questions)
+
+quiz_list(
+  lapply(mywords, function(myword) {
+    rank_ex <- sortable::question_rank(
+      myword,
+      learnr::answer(strsplit(myword, "")[[1]], correct = TRUE)
+    )
+    rank_ex
+  }),
+  "Sort the letters"
+)
+```
+
+## 2.3 Phrases
+
+````{r fry25_phrases_2, echo = FALSE}
+n_questions <- 9
+myphrases <- sample(fry25_phrases, n_questions)
+
+quiz_list(
+  lapply(myphrases, function(myphrase) {
+    rank_ex <- sortable::question_rank(
+      myphrase,
+      learnr::answer(strsplit(myphrase, " ")[[1]], correct = TRUE)
+    )
+    rank_ex
+  }),
+  "Sort the words"
+)
+```
+
+## 3.1 Matching (Medium)
+
+```{r fry25-3, echo=FALSE, asis = TRUE}
+n_questions <- 3
+mybank <- lexicon::sw_fry_100
+mywordsets <- lapply(seq(n_questions), function(i) { sample(mybank, 4) })
+
+quiz_list(
+  lapply(mywordsets, function(mywords) {
+    question(mywords[1],
+             answer(mywords[1], correct = TRUE),
+             answer(mywords[2]),
+             answer(mywords[3]),
+             answer(mywords[4]),
+             random_answer_order = TRUE,
+             allow_retry = TRUE
+    )
+  }),
+  "Find the match"
+)
+```
+
+## 3.2 Sorting
+
+````{r fry25_sorting_3, echo = FALSE}
+n_questions <- 3
+mywords <- sample(mybank, n_questions)
+
+quiz_list(
+  lapply(mywords, function(myword) {
+    rank_ex <- sortable::question_rank(
+      myword,
+      learnr::answer(strsplit(myword, "")[[1]], correct = TRUE)
+    )
+    rank_ex
+  }),
+  "Sort the letters"
+)
+```
+
+## 3.3 Phrases
+
+````{r fry100_phrases_2, echo = FALSE}
+n_questions <- 9
+myphrases <- sample(fry100_phrases, n_questions)
+
+quiz_list(
+  lapply(myphrases, function(myphrase) {
+    rank_ex <- sortable::question_rank(
+      myphrase,
+      learnr::answer(strsplit(myphrase, " ")[[1]], correct = TRUE)
+    )
+    rank_ex
+  }),
+  "Sort the words"
+)
+```
